@@ -1,51 +1,40 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class TwoSets {
+public class NumberSpiral {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        long n = fs.nextLong();
+        int t = fs.nextInt();
 
-        Set<Integer> a = new HashSet<>();
-        Set<Integer> b = new HashSet<>();
+        while (t-- > 0) {
+            long r = fs.nextLong();
+            long c = fs.nextLong();
 
-        long total = n * (n + 1) / 2;
+            if (r >= c) {
+                if (r % 2 == 0) {
+                    long power = r * r;
+                    out.println(power - (c-1));
+                } else {
+                    long power = (r-1) * (r-1);
+                    out.println(power + 1 + (c - 1));
+                }
+            } else {
+                if (c % 2 == 0) {
+                    long power = (c-1) * (c-1);
+                    out.println(power + 1 + (r-1));
 
-        if (total % 2 != 0) {
-            out.println("NO");
-        } else {
-            long target = total / 2;
-            for (int i = (int)n;i > 0;i--) {
-                if (target >= i) {
-                    target -= i;
-                    a.add(i);
-                } 
+                } else {
+                    long power = c * c;
+                    out.println(power - (r-1));
 
-                if (target == 0) break;
-            }
-
-            for (int i = 1;i <= n;i++) {
-                if (!a.contains(i)) {
-                    b.add(i);
                 }
             }
 
-            out.println("YES");
-            out.println(a.size());
-            for (int x : a) {
-                out.print(x + " ");
-            }
-            out.println();
-            out.println(b.size());
-            for (int x : b) {
-                out.print(x + " ");
-            }
-
         }
-
         out.flush();
     }
 

@@ -1,18 +1,25 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class BitString {
+public class TrailingZeros {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        int n = fs.nextInt();
+        long n = fs.nextLong();
 
-        long[] arr = new long[n];
-        for (int i = 0;i < n;i++) {
-           arr[i] = fs.nextLong();
-        }
+        long ans = 0;
+
+        // sum of n / 5^k
+        for (int k = 1;k <= n;k++) {
+            long div = (long)Math.pow(5, k);
+            if ((n / div) == 0) break;
+            ans += (n / div);
+        }     
+
+        out.println(ans);
 
         out.flush();
     }

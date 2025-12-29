@@ -1,8 +1,8 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class TwoKnights {
-
+public class BitString {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -10,15 +10,16 @@ public class TwoKnights {
 
         int n = fs.nextInt();
 
-        for (int k = 1;k <= n;k++) {
-            long sq = k * k;
-            long comb = sq * (sq - 1) / 2L; // c(k*k, 2) = n * (n - 1) / 2
-            // System.out.println("c: " + comb);
-            long attack = (k - 2) * (k - 1) * 4L; // n - k + 1  - no of ways 
+        long mod = (long) (1e9 + 7);
 
-            out.println(comb - attack);
+        int i = 0;
+        long ans = 1L;
+        while (i < n) {
+            ans = (ans * 2) % mod;
+            i++;
         }
 
+        out.println(ans);
 
         out.flush();
     }
