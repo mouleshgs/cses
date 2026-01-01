@@ -1,0 +1,115 @@
+import java.io.*;
+import java.util.*;
+
+public class TowerOfHanoi {
+
+ public static void solve(int n, int from, int to, int aux, List<String> ans) {
+        if (n == 0) return;
+
+        solve(n - 1, from, aux, to, ans);
+
+        ans.add(from + " " + to);
+
+        solve(n - 1, aux, to, from, ans);
+    }
+
+        public static void main(String[] args) throws Exception {
+        FastScanner fs = new FastScanner();
+        PrintWriter out = new PrintWriter(System.out);
+
+        int n = fs.nextInt();
+
+        List<String> ans = new ArrayList<>();
+
+        solve(n, 1, 3, 2, ans);
+
+        out.println(ans.size());
+        for (String s : ans) {
+            out.println(s);
+        }
+
+        out.flush();
+    }
+
+    static class FastScanner {
+        private final byte[] buffer = new byte[1 << 16];
+        private int ptr = 0, len = 0;
+        private final InputStream in = System.in;
+
+        private int readByte() throws IOException {
+            if (ptr >= len) {
+                len = in.read(buffer);
+                ptr = 0;
+                if (len <= 0) return -1;
+            }
+            return buffer[ptr++];
+        }
+
+        int nextInt() throws IOException {
+            int c, sign = 1, val = 0;
+            do {
+                c = readByte();
+            } while (c <= ' ');
+
+            if (c == '-') {
+                sign = -1;
+                c = readByte();
+            }
+
+            while (c > ' ') {
+                val = val * 10 + (c - '0');
+                c = readByte();
+            }
+            return val * sign;
+        }
+
+        long nextLong() throws IOException {
+            int c, sign = 1;
+            long val = 0;
+            do {
+                c = readByte();
+            } while (c <= ' ');
+
+            if (c == '-') {
+                sign = -1;
+                c = readByte();
+            }
+
+            while (c > ' ') {
+                val = val * 10 + (c - '0');
+                c = readByte();
+            }
+            return val * sign;
+        }
+
+        String next() throws IOException {
+            int c;
+            StringBuilder sb = new StringBuilder();
+            do {
+                c = readByte();
+            } while (c <= ' ');
+
+            while (c > ' ') {
+                sb.append((char) c);
+                c = readByte();
+            }
+            return sb.toString();
+        }
+
+        String nextLine() throws IOException {
+           int c;
+           StringBuilder sb = new StringBuilder();
+           while (true) {
+               c = readByte();
+               if (c == -1) return sb.toString();
+               if (c != '\n' && c != '\r') break;
+           }
+
+           while (c != -1 && c != '\n' && c != '\r') {
+               sb.append((char) c);
+               c = readByte();
+           }
+           return sb.toString();
+        }
+    }
+}
