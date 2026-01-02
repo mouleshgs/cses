@@ -1,32 +1,54 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class TowerOfHanoi {
+public class CreatingString {
 
- public static void solve(int n, int from, int to, int aux, List<String> ans) {
-        if (n == 0) return;
+    static List<String> ans = new ArrayList<>();
 
-        solve(n - 1, from, aux, to, ans);
+    static void solve(char[] arr, boolean[] used, StringBuilder sb) {
 
-        ans.add(from + " " + to);
+        if (sb.length() == arr.length) {
+            ans.add(sb.toString());
+            return;
+        }
 
-        solve(n - 1, aux, to, from, ans);
+        for (int i = 0; i < arr.length; i++) {
+
+            if (used[i]) continue;
+
+            if (i > 0 && arr[i] == arr[i - 1] && !used[i - 1]) continue;
+
+            used[i] = true;
+            sb.append(arr[i]);
+
+            solve(arr, used, sb);
+
+            sb.deleteCharAt(sb.length() - 1);
+            used[i] = false;
+        }
     }
 
-        public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
+
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        int n = fs.nextInt();
+        String s = fs.next();
 
-        List<String> ans = new ArrayList<>();
+        char[] arr = s.toCharArray();
+        Arrays.sort(arr);
 
-        solve(n, 1, 3, 2, ans);
+        solve(arr, new boolean[arr.length], new StringBuilder());
 
-        out.println(ans.size());
-        for (String s : ans) {
-            out.println(s);
+        StringBuilder output = new StringBuilder();
+        output.append(ans.size()).append('\n');
+
+        for (String str : ans) {
+            output.append(str).append('\n');
         }
+
+        out.println(output.toString());
 
         out.flush();
     }

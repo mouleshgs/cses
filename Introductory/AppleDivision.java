@@ -1,44 +1,42 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class GrayCode {
-
-    // public static void solve(int idx, int n, StringBuilder ans, List<String> res) {
-    //     if (idx == n) {
-    //         res.add(ans.toString());
-    //         return;
-    //     }
-
-    //     ans.append("0");
-    //     solve(idx+1, n, ans, res);
-    //     ans.deleteCharAt(ans.length() - 1);
-
-    //     ans.append("1");
-    //     solve(idx+1, n, ans, res);
-    //     ans.deleteCharAt(ans.length() - 1);
-    // }
+public class AppleDivision {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
         int n = fs.nextInt();
-        int limit = 1 << n;
 
-        for (int i = 0; i < limit; i++) {
-            int gray = i ^ (i >> 1); // gray code formual = i ^ (i >> 1)
-            out.println(toBinary(gray, n));
+        long total = 0;
+
+        long[] arr = new long[n];
+        for (int i = 0;i < n;i++) {
+           arr[i] = fs.nextLong();
+           total += arr[i];
         }
+
+        long ans = Long.MAX_VALUE;
+
+        for (int i = 0;i < (1 << n);i++) {
+            long sum = 0;
+            for (int j = 0;j < n;j++) {
+                if (((i >> j) & 1) != 0) {
+                    sum += arr[j];
+                }
+            }
+
+            long other = total - sum;
+
+            ans = Math.min(ans, Math.abs(sum - other));
+        }
+
+        out.println(ans);
+        
 
         out.flush();
-    }
-
-    static String toBinary(int x, int n) {
-        String s = Integer.toBinaryString(x);
-        while (s.length() < n) {
-            s = "0" + s;
-        }
-        return s;
     }
 
     static class FastScanner {

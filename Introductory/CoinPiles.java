@@ -1,53 +1,34 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class CreatingString {
+public class CoinPiles {
 
-    static List<String> ans = new ArrayList<>();
-
-    static void solve(char[] arr, boolean[] used, StringBuilder sb) {
-
-        if (sb.length() == arr.length) {
-            ans.add(sb.toString());
-            return;
-        }
-
-        for (int i = 0; i < arr.length; i++) {
-
-            if (used[i]) continue;
-
-            if (i > 0 && arr[i] == arr[i - 1] && !used[i - 1]) continue;
-
-            used[i] = true;
-            sb.append(arr[i]);
-
-            solve(arr, used, sb);
-
-            sb.deleteCharAt(sb.length() - 1);
-            used[i] = false;
-        }
-    }
+    /*
+        a - 2 b - 1
+        a - 1 b - 2
+    */
 
     public static void main(String[] args) throws Exception {
-
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        String s = fs.next();
+        int n = fs.nextInt();
 
-        char[] arr = s.toCharArray();
-        Arrays.sort(arr);
+       while (n-- > 0) {
+        long a = fs.nextLong();
+        long b = fs.nextLong();
 
-        solve(arr, new boolean[arr.length], new StringBuilder());
+        long sum = a + b;
 
-        StringBuilder output = new StringBuilder();
-        output.append(ans.size()).append('\n');
-
-        for (String str : ans) {
-            output.append(str).append('\n');
+        if (sum % 3 == 0 && Math.max(a, b) <= 2 * Math.min(a, b)) {
+            out.println("YES");
+        } else {
+            out.println("NO");
         }
+       }
 
-        out.println(output.toString());
+
 
         out.flush();
     }

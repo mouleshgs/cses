@@ -1,61 +1,36 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class PalindromeReorder {
+public class TowerOfHanoi {
 
-    public static void main(String[] args) throws Exception {
+ public static void solve(int n, int from, int to, int aux, List<String> ans) {
+        if (n == 0) return;
+
+        solve(n - 1, from, aux, to, ans);
+
+        ans.add(from + " " + to);
+
+        solve(n - 1, aux, to, from, ans);
+    }
+
+        public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        String s = fs.next();
+        int n = fs.nextInt();
 
-        int n = s.length();
+        List<String> ans = new ArrayList<>();
 
-        int[] freq = new int[26];
+        solve(n, 1, 3, 2, ans);
 
-        for (char ch : s.toCharArray()) {
-            freq[ch - 'A']++;
+        out.println(ans.size());
+        for (String s : ans) {
+            out.println(s);
         }
-
-        int count = 0;
-
-        int oddCh = 'A';
-
-        for (int i = 0;i < 26;i++) {
-            if (freq[i] % 2 != 0) {
-                count++;
-                oddCh = i;
-                if (count > 1) {
-                    out.println("NO SOLUTION");
-                    out.flush();
-                    return;
-                }
-            }
-        }
-
-        char[] ans = new char[n];
-        int k = 0;
-
-        for (int i = 0; i < 26; i++) {
-            int cnt = freq[i] / 2;
-            for (int j = 0; j < cnt; j++) {
-                ans[k] = (char)(i + 'A');
-                ans[n - k - 1] = (char)(i + 'A');
-                k++;
-            }
-        }
-
-            if (count == 1) {
-                ans[n / 2] = (char)(oddCh + 'A');
-            }
-
-            out.println(String.valueOf(ans));
-        
-
 
         out.flush();
     }
-
 
     static class FastScanner {
         private final byte[] buffer = new byte[1 << 16];

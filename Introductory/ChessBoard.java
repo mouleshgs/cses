@@ -1,33 +1,43 @@
+package Introductory;
 import java.io.*;
 import java.util.*;
 
-public class CoinPiles {
+public class ChessBoard {
 
-    /*
-        a - 2 b - 1
-        a - 1 b - 2
-    */
+    static char[][] board = new char[8][8];
+    static int count = 0;
+    static boolean[] occCol = new boolean[8];
+    static boolean[] dig1 = new boolean[16];
+    static boolean[] dig2 = new boolean[16];
 
+    public static void dfs(int row) {
+        if (row == 8) {
+            count++;
+            return;
+        }
+
+        for (int c = 0;c < 8;c++) {
+            if (board[row][c] == '*') continue;
+
+            if (occCol[c] || dig1[row - c + 7] || dig2[row + c]) continue;
+
+            occCol[c] = dig1[row - c + 7] = dig2[row + c] = true;
+
+            dfs(row+1);
+
+            occCol[c] = dig1[row - c + 7] = dig2[row + c] = false;
+        }
+    }
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        int n = fs.nextInt();
-
-       while (n-- > 0) {
-        long a = fs.nextLong();
-        long b = fs.nextLong();
-
-        long sum = a + b;
-
-        if (sum % 3 == 0 && Math.max(a, b) <= 2 * Math.min(a, b)) {
-            out.println("YES");
-        } else {
-            out.println("NO");
+        for (int i = 0;i < 8;i++) {
+            board[i] = fs.next().toCharArray();
         }
-       }
 
-
+        dfs(0);
+        out.println(count);
 
         out.flush();
     }
@@ -114,3 +124,4 @@ public class CoinPiles {
         }
     }
 }
+
