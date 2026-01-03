@@ -1,7 +1,8 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class DistinctNumbers {
+public class SumOfTwoNumber {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -9,20 +10,29 @@ public class DistinctNumbers {
 
         int n = fs.nextInt();
 
-        Set<Long> set = new HashSet<>();
-        int count = 0;
+        int k = fs.nextInt();
+
+       Map<Long, Integer> map = new HashMap<>();
 
         long[] arr = new long[n];
         for (int i = 0;i < n;i++) {
            arr[i] = fs.nextLong();
-           if (set.add(arr[i])) {
-                count++;
-           }
         }
 
-        out.println(count);
+        String ans = "IMPOSSIBLE";
+
+        for (int i = 0;i < n;i++) { 
+            
+            map.put(arr[i], i);
+            if (map.containsKey(k - arr[i])) {
+                ans = (map.get(k - arr[i]) + 1) + " " + (i+1);
+                break;
+            }
+        }
 
 
+        out.println(ans);
+        
         out.flush();
     }
 
