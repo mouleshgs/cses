@@ -1,17 +1,8 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class FactoryMachines {
-
-    public static boolean check(long mid, long[] arr, long t) {
-
-        long total = 0L;
-        for (long x : arr) {
-            total += mid / x;
-        }
-
-        return total >= t;
-    }
+public class DistinctSubarray {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -19,33 +10,29 @@ public class FactoryMachines {
 
         int n = fs.nextInt();
 
-        long t = fs.nextLong();
-
         long[] arr = new long[n];
-        long min = Long.MAX_VALUE;
         for (int i = 0;i < n;i++) {
            arr[i] = fs.nextLong();
-           min = Math.min(arr[i], min);
-        }
-
-
-
-        long l = 0;
-        long r = min * t;
-        long ans = -1;
-
-        while (l <= r) {
-            long mid = l + (r - l) / 2;
-            if (check(mid, arr, t)) {
-                ans = mid;
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
         }
         
+        int left = 0;
+        Set<Long> set = new HashSet<>(); 
 
+        long ans = 0L;
+        for (int i = 0; i < n;i++) {
+
+            
+            while (set.contains(arr[i])) {
+                set.remove(arr[left]);
+                left++;
+            }
+            
+            set.add(arr[i]);
+            ans += (i - left + 1);   
+        }
+        
         out.println(ans);
+
         out.flush();
     }
 

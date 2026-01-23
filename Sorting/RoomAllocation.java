@@ -1,7 +1,18 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class DistinctSubarray {
+public class RoomAllocation {
+
+    static class Pair {
+        int a, b, i;
+
+        Pair(int a, int b, int i) {
+            this.a = a;
+            this.b = b;
+            this.i = i;
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -9,29 +20,43 @@ public class DistinctSubarray {
 
         int n = fs.nextInt();
 
-        long[] arr = new long[n];
+        Pair[] arr = new Pair[n];
         for (int i = 0;i < n;i++) {
-           arr[i] = fs.nextLong();
+            int a = fs.nextInt();
+            int b = fs.nextInt(); 
+            arr[i] = new Pair(a, b, i);
         }
-        
-        int left = 0;
-        Set<Long> set = new HashSet<>(); 
 
-        long ans = 0L;
-        for (int i = 0; i < n;i++) {
+        Arrays.sort(arr, (x, y) -> Integer.compare(x.a, y.a));  
 
-            
-            while (set.contains(arr[i])) {
-                set.remove(arr[left]);
-                left++;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> Integer.compare(x[0], y[0]));
+
+        int[] ans = new int[n];
+        int room = 0;
+
+        for (Pair c : arr) {
+
+            if (!pq.isEmpty() && pq.peek()[0] < c.a) {
+                int[] top = pq.poll();
+                int r = top[1];
+
+                ans[c.i] = r;
+                pq.offer(new int[]{c.b, r});
+            } else {
+                room++;
+                ans[c.i] = room;
+                pq.offer(new int[]{c.b, room});
             }
-            
-            set.add(arr[i]);
-            ans += (i - left + 1);   
         }
-        
-        out.println(ans);
 
+        out.println(room);
+
+        for (int val : ans) {
+            out.print(val + " ");
+        }
+
+        out.println();
+        
         out.flush();
     }
 

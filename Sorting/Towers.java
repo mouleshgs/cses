@@ -1,7 +1,8 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class Playlist {
+public class Towers {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -14,22 +15,29 @@ public class Playlist {
            arr[i] = fs.nextLong();
         }
         
-        int left = 0;
+        TreeMap<Long, Integer> map = new TreeMap<>();
+
+        for (int i = 0;i < n;i++) {
+            long x = arr[i];
+
+            Long higher = map.higherKey(x);
+
+            if (higher == null) {
+                map.put(x, map.getOrDefault(x, 0) + 1);
+            } else {
+                int sz = map.get(higher);
+                map.put(higher, sz - 1);
+                if (map.get(higher) == 0) {
+                    map.remove(higher);
+                }
+                map.put(x, map.getOrDefault(x, 0) + 1);
+            }
+        }
 
         int ans = 0;
 
-        Set<Long> set = new HashSet<>();
-        for (int right = 0;right < n;right++) {
-
-            
-            while (left < n && set.contains(arr[right])) {
-                
-                set.remove(arr[left]);
-                left++;
-            }
-            
-            set.add(arr[right]);
-            ans = Math.max(ans, right - left + 1);
+        for (int i : map.values()) {
+            ans += i;
         }
 
         out.println(ans);

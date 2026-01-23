@@ -1,7 +1,8 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class NestedRangeCheck {
+public class Playlist {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -9,49 +10,30 @@ public class NestedRangeCheck {
 
         int n = fs.nextInt();
 
-        int[][] arr = new int[n][3];
+        long[] arr = new long[n];
         for (int i = 0;i < n;i++) {
-            arr[i][0] = fs.nextInt();
-            arr[i][1] = fs.nextInt(); 
-            arr[i][2] = i;
+           arr[i] = fs.nextLong();
         }
+        
+        int left = 0;
 
-        Arrays.sort(arr, (a, b) -> (a[0] != b[0]) ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
+        int ans = 0;
 
-        int minEnd = Integer.MAX_VALUE;
+        Set<Long> set = new HashSet<>();
+        for (int right = 0;right < n;right++) {
 
-        int[] contains = new int[n];
-
-        for (int i = n-1; i >= 0;i--) {
-            if (arr[i][1] >= minEnd) {
-                contains[arr[i][2]] = 1;
+            
+            while (left < n && set.contains(arr[right])) {
+                
+                set.remove(arr[left]);
+                left++;
             }
-
-            minEnd = Math.min(minEnd, arr[i][1]);
+            
+            set.add(arr[right]);
+            ans = Math.max(ans, right - left + 1);
         }
 
-        int maxEnd = Integer.MIN_VALUE;
-
-        int[] contained = new int[n];
-
-        for (int i = 0;i < n;i++) {
-            if (arr[i][1] <= maxEnd) {
-                contained[arr[i][2]] = 1; 
-            }
-
-            maxEnd = Math.max(maxEnd, arr[i][1]);
-        }
-
-        for (int v : contains) {
-            out.print(v + " ");
-        }
-        out.println();
-
-        for (int v : contained) {
-            out.print(v + " ");
-        }
-
-        out.println();
+        out.println(ans);
 
         out.flush();
     }

@@ -1,7 +1,18 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class Towers {
+public class FactoryMachines {
+
+    public static boolean check(long mid, long[] arr, long t) {
+
+        long total = 0L;
+        for (long x : arr) {
+            total += mid / x;
+        }
+
+        return total >= t;
+    }
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -9,38 +20,33 @@ public class Towers {
 
         int n = fs.nextInt();
 
+        long t = fs.nextLong();
+
         long[] arr = new long[n];
+        long min = Long.MAX_VALUE;
         for (int i = 0;i < n;i++) {
            arr[i] = fs.nextLong();
+           min = Math.min(arr[i], min);
         }
-        
-        TreeMap<Long, Integer> map = new TreeMap<>();
 
-        for (int i = 0;i < n;i++) {
-            long x = arr[i];
 
-            Long higher = map.higherKey(x);
 
-            if (higher == null) {
-                map.put(x, map.getOrDefault(x, 0) + 1);
+        long l = 0;
+        long r = min * t;
+        long ans = -1;
+
+        while (l <= r) {
+            long mid = l + (r - l) / 2;
+            if (check(mid, arr, t)) {
+                ans = mid;
+                r = mid - 1;
             } else {
-                int sz = map.get(higher);
-                map.put(higher, sz - 1);
-                if (map.get(higher) == 0) {
-                    map.remove(higher);
-                }
-                map.put(x, map.getOrDefault(x, 0) + 1);
+                l = mid + 1;
             }
         }
-
-        int ans = 0;
-
-        for (int i : map.values()) {
-            ans += i;
-        }
+        
 
         out.println(ans);
-
         out.flush();
     }
 

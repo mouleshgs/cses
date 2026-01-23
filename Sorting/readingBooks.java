@@ -1,7 +1,8 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class DistinctSubsequence {
+public class readingBooks {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
@@ -9,27 +10,16 @@ public class DistinctSubsequence {
 
         int n = fs.nextInt();
 
-        long mod = (long) (1e9 + 7);
-
         long[] arr = new long[n];
+        long sum = 0L;
+        long max = 0;
         for (int i = 0;i < n;i++) {
            arr[i] = fs.nextLong();
+           sum += arr[i];
+           max = Math.max(arr[i], max);
         }
-
-        Map<Long, Integer> map = new HashMap<>();
-
-        for (int i = 0;i < n;i++) {
-            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
-        }
-
-        long ans = 1L;
-
-        for (Map.Entry<Long, Integer> e : map.entrySet()) {
-            ans = ans * (e.getValue() + 1) % mod;
-        }
-
-        out.println(ans-1);
-
+        
+        System.out.println(Math.max(sum, 2 * max));
         out.flush();
     }
 

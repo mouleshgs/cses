@@ -1,61 +1,67 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class RoomAllocation {
-
-    static class Pair {
-        int a, b, i;
-
-        Pair(int a, int b, int i) {
-            this.a = a;
-            this.b = b;
-            this.i = i;
-        }
-    }
+public class TrafficLights {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
+        int x = fs.nextInt();
         int n = fs.nextInt();
 
-        Pair[] arr = new Pair[n];
+        /*
+            0, 2 2
+            2, 3 1 
+            3, 6 3
+            6, 8 2
+
+            3 1
+            2 2
+
+            TLE due to the java performance we can't do anything
+            
+        */
+
+        long[] arr = new long[n];
         for (int i = 0;i < n;i++) {
-            int a = fs.nextInt();
-            int b = fs.nextInt(); 
-            arr[i] = new Pair(a, b, i);
+           arr[i] = fs.nextLong();
         }
 
-        Arrays.sort(arr, (x, y) -> Integer.compare(x.a, y.a));  
+        TreeSet<Integer> pos = new TreeSet<>();
+        TreeMap<Integer, Integer> len = new TreeMap<>();
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> Integer.compare(x[0], y[0]));
+        pos.add(0);
+        pos.add(x);
+        len.put(x, 1);
 
-        int[] ans = new int[n];
-        int room = 0;
 
-        for (Pair c : arr) {
+        StringBuilder sb = new StringBuilder();
 
-            if (!pq.isEmpty() && pq.peek()[0] < c.a) {
-                int[] top = pq.poll();
-                int r = top[1];
+        for (int i = 0; i < n; i++) {
+            int p = (int) arr[i];
 
-                ans[c.i] = r;
-                pq.offer(new int[]{c.b, r});
-            } else {
-                room++;
-                ans[c.i] = room;
-                pq.offer(new int[]{c.b, room});
-            }
+            int left = pos.lower(p);
+            int right = pos.higher(p);
+
+            int old = right - left;
+            len.put(old, len.get(old) - 1);
+            if (len.get(old) == 0) len.remove(old);
+
+            int a = p - left;
+            int b = right - p;
+
+            len.put(a, len.getOrDefault(a, 0) + 1);
+            len.put(b, len.getOrDefault(b, 0) + 1);
+
+            pos.add(p);
+
+           sb.append(len.lastKey()).append(" ");
         }
 
-        out.println(room);
+       out.println(sb.toString());
 
-        for (int val : ans) {
-            out.print(val + " ");
-        }
-
-        out.println();
-        
         out.flush();
     }
 

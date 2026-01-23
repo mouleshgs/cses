@@ -1,50 +1,59 @@
+package Sorting;
 import java.io.*;
 import java.util.*;
 
-public class MissingCoinSum {
+public class NestedRangeCheck {
 
-    /*
-    1 2 2 7 9
-    
-    1 3 5 12 21
-    
-    1 2 3 4 
-    4 - 
-
-    c <= x+1 
-    */
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
         int n = fs.nextInt();
 
-        long[] arr = new long[n];
+        int[][] arr = new int[n][3];
         for (int i = 0;i < n;i++) {
-           arr[i] = fs.nextLong();
+            arr[i][0] = fs.nextInt();
+            arr[i][1] = fs.nextInt(); 
+            arr[i][2] = i;
         }
 
-        Arrays.sort(arr);
+        Arrays.sort(arr, (a, b) -> (a[0] != b[0]) ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
 
-        long x = 0L;
+        int minEnd = Integer.MAX_VALUE;
 
-        boolean f = true;
+        int[] contains = new int[n];
 
-        for (int i = 0;i < n;i++) {
-            long c = arr[i];
-            if (c <= x + 1) {
-                x += c;
-            } else {
-                out.println(x+1);
-                f = false;
-                break;
+        for (int i = n-1; i >= 0;i--) {
+            if (arr[i][1] >= minEnd) {
+                contains[arr[i][2]] = 1;
             }
+
+            minEnd = Math.min(minEnd, arr[i][1]);
         }
 
-        if (f) {
-            out.println(x+1);
+        int maxEnd = Integer.MIN_VALUE;
+
+        int[] contained = new int[n];
+
+        for (int i = 0;i < n;i++) {
+            if (arr[i][1] <= maxEnd) {
+                contained[arr[i][2]] = 1; 
+            }
+
+            maxEnd = Math.max(maxEnd, arr[i][1]);
         }
-        
+
+        for (int v : contains) {
+            out.print(v + " ");
+        }
+        out.println();
+
+        for (int v : contained) {
+            out.print(v + " ");
+        }
+
+        out.println();
+
         out.flush();
     }
 
